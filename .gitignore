@@ -1,0 +1,35 @@
+# ── 隐私 / 本机状态：绝对不要提交 ──────────────────────────────
+# config.yaml 里有你的 api_key、Redis 地址、目标会话名
+config.yaml
+# prompt.txt 是你会话初始化的提示词（可能含个人信息）
+prompt.txt
+# 运行日志里有真实聊天内容、wxid、窗口句柄
+wechatauto_logs/
+*.log
+logs/
+
+# ── 虚拟环境 / 构建产物 ───────────────────────────────────────
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ── 编辑器 / 系统 ─────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# ── 误提交兜底 ────────────────────────────────────────────────
+# 万一有人手滑加了 config.yaml / prompt.txt，下面两行保证示例文件仍能进版本库
+!config.example.yaml
+!prompt.example.txt

@@ -1,0 +1,37 @@
+# wechat2api 配置示例
+# 用法：复制成 config.yaml 再按需修改
+#   copy config.example.yaml config.yaml
+#
+# 所有字段都可以用环境变量覆盖，规则：WECHAT2API__<段名>__<字段名>
+# 例如：$env:WECHAT2API__WECHAT__TARGET='文件传输助手'
+# 环境变量优先级高于 yaml。
+
+server:
+  host: 127.0.0.1      # 默认只监听本机；确实要给别人连再改 0.0.0.0（等于把微信暴露给局域网）
+  port: 8800
+  api_key: ""          # 留空=不鉴权。填了就必须带 Authorization: Bearer <api_key>
+                       # ⚠ 服务等于你的微信：除非只在本机用，否则务必设置，且不要用弱口令
+  model_name: wechat-2api
+
+redis:
+  url: redis://127.0.0.1:6379/0
+  prefix: wechat2api
+  require: false       # true = Redis 连不上直接启动失败；false = 退回进程内存（重启丢会话）
+  ttl_seconds: 0       # >0 时给会话键加过期时间（秒），0 = 永不过期
+
+wechat:
+  target: 微信支付      # 发消息的会话显示名：服务号名 / 好友昵称 / 群名 都行
+  init_command: /clear # 新会话初始化第一步：发给目标会话清上下文（不是所有目标都支持）
+  prompt_file: prompt.txt   # 新会话初始化第二步：这个文件的全部内容
+  exact: false         # 目标名是否精确匹配（false=模糊匹配，名字太短容易匹配错会话）
+  send_timeout: 60.0
+  reply_timeout: 120.0 # 一问一答等回复的上限（秒）
+  reply_settle: 3.0    # 收到最后一条回复后，再静默这么久就算说完（对方分多条发时用）
+  init_command_timeout: 60.0
+  init_prompt_timeout: 120.0
+  poll_interval: 0.5   # 收信轮询间隔（秒）
+  reinit_on_switch: true    # 会话 id 变化时重新 /clear + prompt.txt
+  init_require_reply: true  # 初始化两步都必须等到回复；false 则超时仅告警不失败
+  rhythm: "off"        # 拟人节流档位：off(默认,不等) / fast / natural / calm
+                       # 空串 "" = 不干预底层库自己的默认档（natural）
+                       # ⚠ off 写入最快，但没有节流保护、连续发送被风控概率上升

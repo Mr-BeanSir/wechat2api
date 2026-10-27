@@ -1,0 +1,10 @@
+# wechat2api 运行依赖（底层库 wechatauto-replica 需单独装，见 README §2）
+# 安装:  .venv\Scripts\python.exe -m pip install -r requirements.txt
+#         .venv\Scripts\python.exe -m pip install "wechatauto-replica @ git+https://github.com/fanyuantaier/wechatauto-replica.git"
+
+fastapi>=0.110
+uvicorn[standard]>=0.27
+redis>=5.0
+httpx>=0.27
+PyYAML>=6.0
+xxhash>=3.4
